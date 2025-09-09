@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitor Analysis Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            background: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .refresh-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .export-btn {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .filter-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: #495057;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .company-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+
+        .braze-card::before {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+        }
+
+        .klaviyo-card::before {
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+        }
+
+        .iterable-card::before {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .braze-logo {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .klaviyo-logo {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .iterable-logo {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .last-updated {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .updates-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .update-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .update-item:hover {
+            border-left-color: #007bff;
+            transform: translateX(5px);
+        }
+
+        .update-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .update-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .update-category {
+            display: inline-block;
+            background: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+        .ai-category { background: #e3f2fd; color: #1976d2; }
+        .integration-category { background: #f3e5f5; color: #7b1fa2; }
+        .analytics-category { background: #e8f5e8; color: #388e3c; }
+        .messaging-category { background: #fff3e0; color: #f57c00; }
+        .sdk-category { background: #fce4ec; color: #c2185b; }
+
+        .comparison-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .comparison-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .trend-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .trend-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .trend-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .trend-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .status-online {
+            background: #28a745;
+            box-shadow: 0 0 5px #28a745;
+        }
+
+        .status-offline {
+            background: #dc3545;
+            box-shadow: 0 0 5px #dc3545;
+        }
+
+        .export-data {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Competitor Analysis Dashboard</h1>
+            <p class="subtitle">Real-time insights from Braze, Klaviyo & Iterable</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Actions</label>
+                <div>
+                    <button class="refresh-btn" onclick="refreshData()">🔄 Refresh Data</button>
+                    <button class="export-btn" onclick="exportData()">📊 Export Report</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Filter by Category</label>
+                <div>
+                    <button class="filter-btn active" onclick="filterCategory('all')">All</button>
+                    <button class="filter-btn" onclick="filterCategory('ai')">AI</button>
+                    <button class="filter-btn" onclick="filterCategory('integration')">Integrations</button>
+                    <button class="filter-btn" onclick="filterCategory('messaging')">Messaging</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Fetching latest competitor updates...</p>
+        </div>
+
+        <div class="dashboard" id="dashboard">
+            <!-- Braze Card -->
+            <div class="company-card braze-card">
+                <div class="company-header">
+                    <div class="company-logo braze-logo">B</div>
+                    <div>
+                        <div class="company-name">
+                            Braze
+                            <span class="status-indicator status-online"></span>
+                        </div>
+                        <div class="last-updated">Last updated: June 2025</div>
+                    </div>
+                </div>
+                <div class="updates-list" id="braze-updates">
+                    <!-- Updates will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Klaviyo Card -->
+            <div class="company-card klaviyo-card">
+                <div class="company-header">
+                    <div class="company-logo klaviyo-logo">K</div>
+                    <div>
+                        <div class="company-name">
+                            Klaviyo
+                            <span class="status-indicator status-online"></span>
+                        </div>
+                        <div class="last-updated">Last updated: Q2 2025</div>
+                    </div>
+                </div>
+                <div class="updates-list" id="klaviyo-updates">
+                    <!-- Updates will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Iterable Card -->
+            <div class="company-card iterable-card">
+                <div class="company-header">
+                    <div class="company-logo iterable-logo">I</div>
+                    <div>
+                        <div class="company-name">
+                            Iterable
+                            <span class="status-indicator status-online"></span>
+                        </div>
+                        <div class="last-updated">Last updated: January 2025</div>
+                    </div>
+                </div>
+                <div class="updates-list" id="iterable-updates">
+                    <!-- Updates will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div class="comparison-section">
+            <h2 class="comparison-title">🎯 Industry Trends Analysis</h2>
+            <div class="comparison-grid">
+                <div class="trend-item">
+                    <div class="trend-icon">🤖</div>
+                    <div class="trend-title">AI-Powered Personalization</div>
+                    <div class="trend-description">All competitors are heavily investing in AI for customer segmentation, content optimization, and predictive analytics.</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-icon">📱</div>
+                    <div class="trend-title">Omnichannel Expansion</div>
+                    <div class="trend-description">WhatsApp, SMS, and push notification enhancements are key focus areas across all platforms.</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-icon">🔗</div>
+                    <div class="trend-title">Integration Ecosystem</div>
+                    <div class="trend-description">Expanding partnerships with eCommerce, CRM, and analytics platforms to provide unified customer experiences.</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-icon">📊</div>
+                    <div class="trend-title">Advanced Analytics</div>
+                    <div class="trend-description">Enhanced reporting, real-time dashboards, and predictive insights are becoming standard features.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden export data -->
+    <div id="export-data" class="export-data"></div>
+
+    <script>
+        // Sample data structure - in production, this would come from API calls
+        const competitorData = {
+            braze: [
+                {
+                    title: "OfferFit AI Integration",
+                    description: "New partnership with OfferFit replacing A/B testing with AI decisioning for personalized optimization of any business KPI.",
+                    category: "ai",
+                    date: "June 2025"
+                },
+                {
+                    title: "WhatsApp Video & Click Tracking",
+                    description: "Enhanced WhatsApp messaging with video support and click tracking capabilities for better campaign performance measurement.",
+                    category: "messaging",
+                    date: "June 2025"
+                },
+                {
+                    title: "Accessibility Testing in Inbox Vision",
+                    description: "New accessibility testing feature analyzes email content against WCAG 2.2 AA requirements to ensure inclusive messaging.",
+                    category: "messaging",
+                    date: "June 2025"
+                },
+                {
+                    title: "Banners Channel & RCS Support",
+                    description: "New Banners channel for in-app messaging and Rich Communication Services (RCS) support for enhanced SMS experiences.",
+                    category: "messaging",
+                    date: "May 2025"
+                },
+                {
+                    title: "Stripe Partnership",
+                    description: "New integration with Stripe enabling messaging triggers based on payment events like trial starts and subscription changes.",
+                    category: "integration",
+                    date: "June 2025"
+                },
+                {
+                    title: "Canvas Pre-built Templates",
+                    description: "New eCommerce-focused Canvas templates for common customer journey scenarios and marketing automation.",
+                    category: "messaging",
+                    date: "April 2025"
+                }
+            ],
+            klaviyo: [
+                {
+                    title: "AI Agent for Customer Hub",
+                    description: "24/7 intelligent assistant that answers questions, recommends products, and resolves issues while driving sales.",
+                    category: "ai",
+                    date: "Q2 2025"
+                },
+                {
+                    title: "Custom Data Objects",
+                    description: "Ability to define custom customer data like appointments, loyalty status, or unique business details within customer profiles.",
+                    category: "analytics",
+                    date: "Q2 2025"
+                },
+                {
+                    title: "Campaign Planner AI",
+                    description: "AI-powered campaign planning that creates personalized plans with content, timing, and channel recommendations.",
+                    category: "ai",
+                    date: "Q2 2025"
+                },
+                {
+                    title: "Smart Email Translations",
+                    description: "One-click email translation into 68 languages with automatic customer language preference detection.",
+                    category: "messaging",
+                    date: "Q2 2025"
+                },
+                {
+                    title: "In-App Messaging",
+                    description: "New in-app popup messaging with advanced targeting, segment-based personalization, and delivery controls.",
+                    category: "messaging",
+                    date: "Q2 2025"
+                },
+                {
+                    title: "International SMS Expansion",
+                    description: "Two-way SMS conversation support expanded to Poland, Hungary, and Germany markets.",
+                    category: "messaging",
+                    date: "Q2 2025"
+                },
+                {
+                    title: "Automated SMS Conversations",
+                    description: "Interactive SMS flows for product quizzes, FAQ responses, and purchase assistance available to all users.",
+                    category: "messaging",
+                    date: "Q1 2025"
+                }
+            ],
+            iterable: [
+                {
+                    title: "Unknown User Activation (Beta)",
+                    description: "Automatically add unknown users to projects based on defined criteria without developer intervention after initial SDK setup.",
+                    category: "analytics",
+                    date: "January 2025"
+                },
+                {
+                    title: "Quick Actions Menu",
+                    description: "New command palette for instant navigation and task completion across the Iterable platform, rolling out to all customers.",
+                    category: "analytics",
+                    date: "January 2025"
+                },
+                {
+                    title: "Merge Users API",
+                    description: "New API endpoint allowing combination of two user profiles including system events, custom events, and profile fields.",
+                    category: "integration",
+                    date: "January 2025"
+                },
+                {
+                    title: "Enhanced Project Navigation",
+                    description: "Pin favorite projects, alphabetical sorting, and improved project switching for better user experience.",
+                    category: "analytics",
+                    date: "January 2025"
+                },
+                {
+                    title: "WhatsApp Template Management",
+                    description: "Edit and resubmit rejected business-initiated WhatsApp templates directly within the platform.",
+                    category: "messaging",
+                    date: "January 2025"
+                },
+                {
+                    title: "GDPR Endpoint Rate Limiting",
+                    description: "New 1000 calls per 24-hour limit on forget/unforget endpoints to ensure system stability and compliance.",
+                    category: "integration",
+                    date: "January 2025"
+                }
+            ]
+        };
+
+        let currentFilter = 'all';
+
+        function loadData() {
+            // Load Braze updates
+            const brazeContainer = document.getElementById('braze-updates');
+            brazeContainer.innerHTML = competitorData.braze.map(update => createUpdateHTML(update)).join('');
+
+            // Load Klaviyo updates
+            const klaviyoContainer = document.getElementById('klaviyo-updates');
+            klaviyoContainer.innerHTML = competitorData.klaviyo.map(update => createUpdateHTML(update)).join('');
+
+            // Load Iterable updates
+            const iterableContainer = document.getElementById('iterable-updates');
+            iterableContainer.innerHTML = competitorData.iterable.map(update => createUpdateHTML(update)).join('');
+        }
+
+        function createUpdateHTML(update) {
+            return `
+                <div class="update-item ${update.category}-update">
+                    <div class="update-title">${update.title}</div>
+                    <div class="update-description">${update.description}</div>
+                    <div class="update-category ${update.category}-category">${update.category.toUpperCase()}</div>
+                    <div class="update-category">${update.date}</div>
+                </div>
+            `;
+        }
+
+        function refreshData() {
+            const loading = document.getElementById('loading');
+            const dashboard = document.getElementById('dashboard');
+            
+            loading.style.display = 'block';
+            dashboard.style.opacity = '0.5';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                loadData();
+                loading.style.display = 'none';
+                dashboard.style.opacity = '1';
+                
+                // Show success message
+                showNotification('Data refreshed successfully!', 'success');
+            }, 2000);
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter updates
+            const updates = document.querySelectorAll('.update-item');
+            updates.forEach(update => {
+                if (category === 'all' || update.classList.contains(`${category}-update`)) {
+                    update.style.display = 'block';
+                } else {
+                    update.style.display = 'none';
+                }
+            });
+        }
+
+        function exportData() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                competitors: competitorData,
+                summary: {
+                    total_updates: Object.values(competitorData).flat().length,
+                    by_category: {
+                        ai: Object.values(competitorData).flat().filter(u => u.category === 'ai').length,
+                        messaging: Object.values(competitorData).flat().filter(u => u.category === 'messaging').length,
+                        integration: Object.values(competitorData).flat().filter(u => u.category === 'integration').length,
+                        analytics: Object.values(competitorData).flat().filter(u => u.category === 'analytics').length
+                    }
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `competitor-analysis-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Report exported successfully!', 'success');
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#dc3545'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            
+            // Auto-refresh every 30 minutes
+            setInterval(refreshData, 30 * 60 * 1000);
+        });
+    </script>
+</body>
+</html>
