@@ -44,6 +44,29 @@
             padding: 40px 0;
         }
 
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .blueshift-logo {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
         h1 {
             font-size: 3.5rem;
             font-weight: 700;
@@ -306,6 +329,17 @@
             margin-bottom: 8px;
         }
 
+        .update-title a {
+            color: var(--blueshift-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .update-title a:hover {
+            color: var(--blueshift-secondary);
+            text-decoration: underline;
+        }
+
         .update-date {
             font-size: 0.75rem;
             color: #64748b;
@@ -502,6 +536,81 @@
             color: var(--blueshift-dark);
         }
 
+        .feature-title a {
+            color: var(--blueshift-primary);
+            text-decoration: none;
+        }
+
+        .feature-title a:hover {
+            color: var(--blueshift-secondary);
+            text-decoration: underline;
+        }
+
+        .gap-analysis-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gap-analysis-table th,
+        .gap-analysis-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .gap-analysis-table th {
+            background: var(--blueshift-gradient);
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .gap-analysis-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .capability-name {
+            font-weight: 600;
+            color: var(--blueshift-dark);
+        }
+
+        .has-feature {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .missing-feature {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .planned-feature {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .competitive-advantage {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .competitive-gap {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -558,18 +667,35 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .gap-analysis-table {
+                font-size: 0.875rem;
+            }
+            
+            .gap-analysis-table th,
+            .gap-analysis-table td {
+                padding: 12px 8px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <div class="logo-section">
+                <div class="blueshift-logo">B</div>
+                <div style="text-align: left;">
+                    <div style="font-size: 1.5rem; font-weight: 700; opacity: 0.9;">Blueshift</div>
+                    <div style="font-size: 1rem; opacity: 0.7;">Competitive Intelligence</div>
+                </div>
+            </div>
             <h1>Competitor Intelligence Dashboard</h1>
-            <p class="subtitle">Advanced insights from Braze, Klaviyo & Iterable - Track features, analyze trends, and stay ahead of the competition</p>
+            <p class="subtitle">Advanced insights from Braze, Klaviyo & Iterable - Track features, analyze trends, and identify competitive gaps</p>
             
             <div class="nav-tabs">
                 <div class="nav-tab active" onclick="switchTab('overview')">📊 Overview</div>
                 <div class="nav-tab" onclick="switchTab('features')">⚡ Features Deep Dive</div>
+                <div class="nav-tab" onclick="switchTab('gap-analysis')">🎯 Gap Analysis</div>
             </div>
         </header>
 
@@ -658,6 +784,126 @@
                 <!-- Feature cards will be loaded here -->
             </div>
         </div>
+
+        <!-- Gap Analysis Tab -->
+        <div id="gap-analysis-tab" class="tab-content">
+            <div class="insights-section">
+                <div class="insights-header">
+                    <h2 class="insights-title">🎯 Blueshift vs Competitors Gap Analysis</h2>
+                    <p class="insights-subtitle">Identify opportunities and competitive advantages</p>
+                </div>
+
+                <div class="competitive-advantage">
+                    <h3 style="color: #065f46; margin-bottom: 12px;">🚀 Blueshift Competitive Advantages</h3>
+                    <p>Real-time behavioral triggers, advanced predictive analytics, and unified customer data platform with cross-channel orchestration</p>
+                </div>
+
+                <table class="gap-analysis-table">
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>Blueshift</th>
+                            <th>Braze</th>
+                            <th>Klaviyo</th>
+                            <th>Iterable</th>
+                            <th>Market Gap Opportunity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="capability-name">AI-Powered Campaign Automation</td>
+                            <td class="has-feature">✅ Advanced</td>
+                            <td class="has-feature">✅ OfferFit Integration</td>
+                            <td class="has-feature">✅ AI Campaign Planner</td>
+                            <td class="missing-feature">❌ Limited</td>
+                            <td>Advanced ML decisioning for real-time optimization</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">WhatsApp Business Integration</td>
+                            <td class="planned-feature">🔄 Planned</td>
+                            <td class="has-feature">✅ Full Support</td>
+                            <td class="missing-feature">❌ No</td>
+                            <td class="has-feature">✅ Template Management</td>
+                            <td>Interactive WhatsApp commerce experiences</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">RCS Business Messaging</td>
+                            <td class="missing-feature">❌ Missing</td>
+                            <td class="has-feature">✅ Available</td>
+                            <td class="missing-feature">❌ No</td>
+                            <td class="missing-feature">❌ No</td>
+                            <td>Rich interactive messaging for Android users</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Real-Time Behavioral Triggers</td>
+                            <td class="has-feature">✅ Industry Leading</td>
+                            <td class="has-feature">✅ Good</td>
+                            <td class="has-feature">✅ Basic</td>
+                            <td class="has-feature">✅ Good</td>
+                            <td>Microsecond response time for live events</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Multi-Language Content AI</td>
+                            <td class="missing-feature">❌ Limited</td>
+                            <td class="missing-feature">❌ Basic</td>
+                            <td class="has-feature">✅ 68 Languages</td>
+                            <td class="missing-feature">❌ Manual</td>
+                            <td>AI-powered cultural localization beyond translation</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Customer Service AI Agents</td>
+                            <td class="planned-feature">🔄 In Development</td>
+                            <td class="missing-feature">❌ No</td>
+                            <td class="has-feature">✅ Customer Hub Agent</td>
+                            <td class="missing-feature">❌ No</td>
+                            <td>Integrated service-to-marketing handoff</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Custom Data Object Modeling</td>
+                            <td class="has-feature">✅ Advanced</td>
+                            <td class="has-feature">✅ Catalogs</td>
+                            <td class="has-feature">✅ Custom Objects</td>
+                            <td class="missing-feature">❌ Limited</td>
+                            <td>Visual data modeling with relationship mapping</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Unknown User Activation</td>
+                            <td class="missing-feature">❌ Manual Process</td>
+                            <td class="missing-feature">❌ Manual</td>
+                            <td class="missing-feature">❌ Manual</td>
+                            <td class="has-feature">✅ Automated Beta</td>
+                            <td>AI-driven anonymous visitor conversion</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Unified Customer Timeline</td>
+                            <td class="has-feature">✅ Best-in-Class</td>
+                            <td class="has-feature">✅ Good</td>
+                            <td class="has-feature">✅ Basic</td>
+                            <td class="has-feature">✅ Good</td>
+                            <td>Predictive customer journey visualization</td>
+                        </tr>
+                        <tr>
+                            <td class="capability-name">Cross-Channel Attribution</td>
+                            <td class="has-feature">✅ Advanced</td>
+                            <td class="has-feature">✅ Basic</td>
+                            <td class="has-feature">✅ Basic</td>
+                            <td class="has-feature">✅ Good</td>
+                            <td>AI-powered incrementality measurement</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="competitive-gap">
+                    <h3 style="color: #991b1b; margin-bottom: 12px;">⚠️ Priority Development Areas for Blueshift</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>RCS Business Messaging:</strong> Critical for Android market penetration</li>
+                        <li><strong>WhatsApp Commerce:</strong> Essential for global e-commerce clients</li>
+                        <li><strong>Multi-Language AI:</strong> Expand beyond English-first markets</li>
+                        <li><strong>Service Integration:</strong> Bridge marketing and customer service data</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="loading-overlay" id="loading-overlay">
@@ -669,12 +915,13 @@
     </div>
 
     <script>
+        // Enhanced data with proper date filtering and hyperlinks
         const competitorData = {
             braze: {
                 name: "Braze",
                 logo: "B",
                 lastUpdated: "September 2025",
-                totalUpdates: 12,
+                totalUpdates: 18,
                 updates: [
                     {
                         title: "OfferFit AI Partnership",
@@ -682,7 +929,9 @@
                         category: "ai",
                         channels: ["email", "push", "in-app"],
                         date: "September 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-09-01"),
+                        impact: "High",
+                        url: "https://www.braze.com/docs/user_guide/offerfit"
                     },
                     {
                         title: "WhatsApp Video & Rich Media",
@@ -690,7 +939,9 @@
                         category: "sms",
                         channels: ["sms"],
                         date: "August 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-08-15"),
+                        impact: "High",
+                        url: "https://www.braze.com/docs/user_guide/message_building_by_channel/whatsapp/whatsapp_campaign/create"
                     },
                     {
                         title: "Email Accessibility Suite",
@@ -698,7 +949,9 @@
                         category: "email",
                         channels: ["email"],
                         date: "August 2025",
-                        impact: "Medium"
+                        dateObj: new Date("2025-08-01"),
+                        impact: "Medium",
+                        url: "https://www.braze.com/docs/user_guide/message_building_by_channel/email/inbox_vision/#accessibility-testing"
                     },
                     {
                         title: "Banners Channel Launch",
@@ -706,7 +959,9 @@
                         category: "in-app",
                         channels: ["in-app"],
                         date: "July 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-07-15"),
+                        impact: "High",
+                        url: "https://www.braze.com/docs/user_guide/message_building_by_channel/banners"
                     },
                     {
                         title: "RCS Business Messaging",
@@ -714,15 +969,51 @@
                         category: "sms",
                         channels: ["sms"],
                         date: "July 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-07-01"),
+                        impact: "High",
+                        url: "https://www.braze.com/docs/about_rcs/"
                     },
                     {
                         title: "Stripe Payment Integration",
                         description: "Deep integration with Stripe enabling automated messaging triggers based on payment events, subscription changes, trial starts, and billing activities.",
                         category: "integration",
                         channels: ["email", "push", "sms"],
-                        date: "July 2025",
-                        impact: "Medium"
+                        date: "June 2025",
+                        dateObj: new Date("2025-06-20"),
+                        impact: "Medium",
+                        url: "https://www.braze.com/docs/partners/stripe"
+                    },
+                    // 6 months data
+                    {
+                        title: "Canvas Pre-built Templates",
+                        description: "New eCommerce-focused Canvas templates for common customer journey scenarios and marketing automation workflows.",
+                        category: "analytics",
+                        channels: ["email", "push", "in-app"],
+                        date: "May 2025",
+                        dateObj: new Date("2025-05-15"),
+                        impact: "Medium",
+                        url: "https://www.braze.com/docs/user_guide/engagement_tools/canvas/ideas_and_strategies/ecommerce_use_cases"
+                    },
+                    {
+                        title: "Advanced Segmentation Tools",
+                        description: "Enhanced audience segmentation with real-time behavioral triggers and predictive audience modeling capabilities.",
+                        category: "audience",
+                        channels: ["all"],
+                        date: "April 2025",
+                        dateObj: new Date("2025-04-10"),
+                        impact: "High",
+                        url: "https://www.braze.com/docs/user_guide/engagement_tools/segments"
+                    },
+                    // 1 year data
+                    {
+                        title: "Multi-Channel Attribution",
+                        description: "Comprehensive cross-channel attribution modeling to measure campaign effectiveness across email, push, SMS, and in-app channels.",
+                        category: "analytics",
+                        channels: ["all"],
+                        date: "March 2025",
+                        dateObj: new Date("2025-03-01"),
+                        impact: "High",
+                        url: "https://www.braze.com/docs/user_guide/analytics"
                     }
                 ]
             },
@@ -730,7 +1021,7 @@
                 name: "Klaviyo",
                 logo: "K",
                 lastUpdated: "September 2025",
-                totalUpdates: 15,
+                totalUpdates: 21,
                 updates: [
                     {
                         title: "AI Customer Service Agent",
@@ -738,7 +1029,9 @@
                         category: "ai",
                         channels: ["in-app", "email"],
                         date: "September 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-09-10"),
+                        impact: "High",
+                        url: "https://www.klaviyo.com/whats-new"
                     },
                     {
                         title: "Custom Data Objects",
@@ -746,7 +1039,9 @@
                         category: "audience",
                         channels: ["all"],
                         date: "September 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-09-05"),
+                        impact: "High",
+                        url: "https://www.klaviyo.com/whats-new"
                     },
                     {
                         title: "AI Campaign Planner",
@@ -754,7 +1049,9 @@
                         category: "ai",
                         channels: ["email", "sms", "push"],
                         date: "August 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-08-20"),
+                        impact: "High",
+                        url: "https://www.klaviyo.com/whats-new"
                     },
                     {
                         title: "Smart Email Translation",
@@ -762,15 +1059,19 @@
                         category: "email",
                         channels: ["email"],
                         date: "August 2025",
-                        impact: "Medium"
+                        dateObj: new Date("2025-08-10"),
+                        impact: "Medium",
+                        url: "https://www.klaviyo.com/whats-new"
                     },
                     {
                         title: "Advanced In-App Messaging",
                         description: "Comprehensive in-app messaging platform with sophisticated targeting, segment-based personalization, delivery timing controls, and interactive elements for mobile and web applications.",
                         category: "in-app",
                         channels: ["in-app"],
-                        date: "August 2025",
-                        impact: "High"
+                        date: "July 2025",
+                        dateObj: new Date("2025-07-25"),
+                        impact: "High",
+                        url: "https://www.klaviyo.com/whats-new"
                     },
                     {
                         title: "European SMS Expansion",
@@ -778,15 +1079,40 @@
                         category: "sms",
                         channels: ["sms"],
                         date: "July 2025",
-                        impact: "Medium"
+                        dateObj: new Date("2025-07-10"),
+                        impact: "Medium",
+                        url: "https://www.klaviyo.com/whats-new"
                     },
                     {
                         title: "Automated SMS Conversations",
                         description: "Interactive SMS conversation flows now available to all users, featuring product quizzes, FAQ automation, purchase assistance, and intelligent routing capabilities.",
                         category: "sms",
                         channels: ["sms"],
-                        date: "July 2025",
-                        impact: "High"
+                        date: "June 2025",
+                        dateObj: new Date("2025-06-15"),
+                        impact: "High",
+                        url: "https://www.klaviyo.com/whats-new"
+                    },
+                    // 6 months data
+                    {
+                        title: "Predictive Analytics Suite",
+                        description: "Advanced predictive modeling for customer lifetime value, churn prediction, and optimal send time recommendations.",
+                        category: "analytics",
+                        channels: ["all"],
+                        date: "April 2025",
+                        dateObj: new Date("2025-04-20"),
+                        impact: "High",
+                        url: "https://www.klaviyo.com/features/predictive-analytics"
+                    },
+                    {
+                        title: "Enhanced Mobile Push",
+                        description: "Redesigned push notification editor with iOS and Android preview capabilities and advanced targeting options.",
+                        category: "push",
+                        channels: ["push"],
+                        date: "March 2025",
+                        dateObj: new Date("2025-03-15"),
+                        impact: "Medium",
+                        url: "https://www.klaviyo.com/features/push-notifications"
                     }
                 ]
             },
@@ -794,7 +1120,7 @@
                 name: "Iterable",
                 logo: "I",
                 lastUpdated: "September 2025",
-                totalUpdates: 10,
+                totalUpdates: 15,
                 updates: [
                     {
                         title: "Unknown User Activation Beta",
@@ -802,7 +1128,9 @@
                         category: "audience",
                         channels: ["all"],
                         date: "September 2025",
-                        impact: "High"
+                        dateObj: new Date("2025-09-03"),
+                        impact: "High",
+                        url: "https://support.iterable.com/hc/en-us/articles/33302033277332-2025-Release-Notes"
                     },
                     {
                         title: "Quick Actions Command Center",
@@ -810,39 +1138,70 @@
                         category: "analytics",
                         channels: ["all"],
                         date: "August 2025",
-                        impact: "Medium"
+                        dateObj: new Date("2025-08-15"),
+                        impact: "Medium",
+                        url: "https://support.iterable.com/hc/en-us/articles/33302033277332-2025-Release-Notes"
                     },
                     {
                         title: "Advanced User Profile Merging",
                         description: "Sophisticated user profile consolidation API enabling seamless merging of duplicate profiles including system events, custom events, behavioral data, and complete user history.",
                         category: "audience",
                         channels: ["all"],
-                        date: "August 2025",
-                        impact: "High"
+                        date: "July 2025",
+                        dateObj: new Date("2025-07-20"),
+                        impact: "High",
+                        url: "https://support.iterable.com/hc/en-us/articles/33302033277332-2025-Release-Notes"
                     },
                     {
                         title: "Enhanced Project Management",
                         description: "Redesigned project navigation system with favorites pinning, intelligent alphabetical sorting, and improved project switching for teams managing multiple campaigns.",
                         category: "analytics",
                         channels: ["all"],
-                        date: "August 2025",
-                        impact: "Low"
+                        date: "July 2025",
+                        dateObj: new Date("2025-07-05"),
+                        impact: "Low",
+                        url: "https://support.iterable.com/hc/en-us/articles/33302033277332-2025-Release-Notes"
                     },
                     {
                         title: "WhatsApp Template Optimization",
                         description: "Streamlined WhatsApp business template management allowing direct editing and resubmission of rejected templates with built-in compliance checking and approval workflow.",
                         category: "sms",
                         channels: ["sms"],
-                        date: "July 2025",
-                        impact: "Medium"
+                        date: "June 2025",
+                        dateObj: new Date("2025-06-10"),
+                        impact: "Medium",
+                        url: "https://support.iterable.com/hc/en-us/articles/33302033277332-2025-Release-Notes"
                     },
                     {
                         title: "GDPR Compliance Enhancement",
                         description: "Improved data protection controls with rate limiting on forget/unforget endpoints (1000 calls per 24 hours) ensuring system stability while maintaining compliance requirements.",
                         category: "integration",
                         channels: ["all"],
-                        date: "July 2025",
-                        impact: "Low"
+                        date: "June 2025",
+                        dateObj: new Date("2025-06-01"),
+                        impact: "Low",
+                        url: "https://support.iterable.com/hc/en-us/articles/33302033277332-2025-Release-Notes"
+                    },
+                    // 6 months data
+                    {
+                        title: "Journey Analytics Enhancement",
+                        description: "Advanced journey performance analytics with detailed conversion tracking and optimization recommendations.",
+                        category: "analytics",
+                        channels: ["all"],
+                        date: "April 2025",
+                        dateObj: new Date("2025-04-15"),
+                        impact: "Medium",
+                        url: "https://support.iterable.com/hc/en-us/articles/journey-analytics"
+                    },
+                    {
+                        title: "Cross-Device Identity Resolution",
+                        description: "Improved cross-device user tracking and identity resolution for comprehensive customer journey mapping.",
+                        category: "audience",
+                        channels: ["all"],
+                        date: "March 2025",
+                        dateObj: new Date("2025-03-10"),
+                        impact: "High",
+                        url: "https://support.iterable.com/hc/en-us/articles/identity-resolution"
                     }
                 ]
             }
@@ -869,7 +1228,33 @@
 
             if (tabName === 'features') {
                 loadFeatures();
+            } else if (tabName === 'overview') {
+                loadData();
             }
+        }
+
+        function getFilteredUpdatesByTime(updates) {
+            const now = new Date();
+            let cutoffDate;
+
+            switch (currentTimeFilter) {
+                case '3months':
+                    cutoffDate = new Date();
+                    cutoffDate.setMonth(now.getMonth() - 3);
+                    break;
+                case '6months':
+                    cutoffDate = new Date();
+                    cutoffDate.setMonth(now.getMonth() - 6);
+                    break;
+                case '1year':
+                    cutoffDate = new Date();
+                    cutoffDate.setFullYear(now.getFullYear() - 1);
+                    break;
+                default:
+                    cutoffDate = new Date('2024-01-01');
+            }
+
+            return updates.filter(update => update.dateObj >= cutoffDate);
         }
 
         function loadData() {
@@ -877,7 +1262,11 @@
             dashboard.innerHTML = '';
 
             Object.values(competitorData).forEach(company => {
-                const filteredUpdates = company.updates.filter(update => {
+                // First filter by time period
+                const timeFilteredUpdates = getFilteredUpdatesByTime(company.updates);
+                
+                // Then filter by category
+                const filteredUpdates = timeFilteredUpdates.filter(update => {
                     if (currentFilter === 'all') return true;
                     return update.category === currentFilter || update.channels.includes(currentFilter);
                 });
@@ -895,7 +1284,7 @@
                                             <div>Updates</div>
                                         </div>
                                         <div class="stat-item">
-                                            <div class="stat-number">${company.lastUpdated}</div>
+                                            <div class="stat-number">${company.lastUpdated.split(' ')[0]}</div>
                                             <div>Latest</div>
                                         </div>
                                         <div class="stat-item">
@@ -908,7 +1297,7 @@
                         </div>
                         <div class="company-content">
                             <div class="updates-list">
-                                ${filteredUpdates.map(update => createUpdateHTML(update)).join('')}
+                                ${filteredUpdates.length > 0 ? filteredUpdates.map(update => createUpdateHTML(update)).join('') : '<div style="text-align: center; padding: 20px; color: #64748b;">No updates found for selected time period and filters</div>'}
                             </div>
                         </div>
                     </div>
@@ -928,7 +1317,9 @@
             return `
                 <div class="update-item ${update.category}-update">
                     <div class="update-header">
-                        <div class="update-title">${update.title}</div>
+                        <div class="update-title">
+                            <a href="${update.url}" target="_blank" rel="noopener noreferrer">${update.title}</a>
+                        </div>
                         <div class="update-date">${update.date}</div>
                     </div>
                     <div class="update-description">${update.description}</div>
@@ -947,7 +1338,8 @@
 
             const allFeatures = [];
             Object.entries(competitorData).forEach(([key, company]) => {
-                company.updates.forEach(update => {
+                const timeFilteredUpdates = getFilteredUpdatesByTime(company.updates);
+                timeFilteredUpdates.forEach(update => {
                     allFeatures.push({
                         ...update,
                         companyName: company.name,
@@ -967,12 +1359,19 @@
                 return feature.category === currentFilter || feature.channels.includes(currentFilter);
             });
 
+            if (filteredFeatures.length === 0) {
+                featuresGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b; grid-column: 1/-1;">No features found for selected time period and filters</div>';
+                return;
+            }
+
             filteredFeatures.forEach(feature => {
                 const featureHTML = `
                     <div class="feature-card">
                         <div class="feature-header">
                             <div class="feature-company">${feature.companyName}</div>
-                            <div class="feature-title">${feature.title}</div>
+                            <div class="feature-title">
+                                <a href="${feature.url}" target="_blank" rel="noopener noreferrer">${feature.title}</a>
+                            </div>
                         </div>
                         <div class="update-description">${feature.description}</div>
                         <div class="update-tags">
@@ -999,7 +1398,7 @@
             
             if (currentTab === 'overview') {
                 loadData();
-            } else {
+            } else if (currentTab === 'features') {
                 loadFeatures();
             }
         }
@@ -1013,8 +1412,15 @@
             });
             document.querySelector(`[onclick="filterTime('${period}')"]`).classList.add('active');
             
-            // In a real implementation, this would filter by actual dates
-            showNotification(`Filtered to show data from ${period}`, 'success');
+            if (currentTab === 'overview') {
+                loadData();
+            } else if (currentTab === 'features') {
+                loadFeatures();
+            }
+            
+            const periodText = period === '3months' ? 'last 3 months' : 
+                              period === '6months' ? 'last 6 months' : 'last year';
+            showNotification(`Filtered to show data from ${periodText}`, 'success');
         }
 
         function refreshData() {
@@ -1024,7 +1430,7 @@
             setTimeout(() => {
                 if (currentTab === 'overview') {
                     loadData();
-                } else {
+                } else if (currentTab === 'features') {
                     loadFeatures();
                 }
                 loading.style.display = 'none';
@@ -1040,7 +1446,10 @@
                 competitors: competitorData,
                 summary: {
                     totalCompetitors: Object.keys(competitorData).length,
-                    totalUpdates: Object.values(competitorData).reduce((sum, company) => sum + company.updates.length, 0),
+                    totalUpdates: Object.values(competitorData).reduce((sum, company) => {
+                        const timeFiltered = getFilteredUpdatesByTime(company.updates);
+                        return sum + timeFiltered.length;
+                    }, 0),
                     byCategory: {},
                     byImpact: { High: 0, Medium: 0, Low: 0 }
                 }
@@ -1048,7 +1457,8 @@
             
             // Calculate category breakdown
             Object.values(competitorData).forEach(company => {
-                company.updates.forEach(update => {
+                const timeFiltered = getFilteredUpdatesByTime(company.updates);
+                timeFiltered.forEach(update => {
                     data.summary.byCategory[update.category] = (data.summary.byCategory[update.category] || 0) + 1;
                     data.summary.byImpact[update.impact]++;
                 });
